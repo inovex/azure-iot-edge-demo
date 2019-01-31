@@ -4,7 +4,7 @@
   "image": {
     "repository": "inovexedgedemoacr.azurecr.io/device",
     "tag": {
-      "version": "${BUILD_BUILDID}",
+      "version": "${BUILD_BUILDNUMBER}",
       "platforms": {
         "amd64": "./Dockerfile.amd64",
         "amd64.debug": "./Dockerfile.amd64.debug",
