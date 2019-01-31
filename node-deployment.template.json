@@ -57,37 +57,14 @@
           }
         },
         "modules": {
-          "tempSensor": {
-            "version": "1.0",
-            "type": "docker",
-            "status": "running",
-            "restartPolicy": "always",
-            "settings": {
-              "image": "mcr.microsoft.com/azureiotedge-simulated-temperature-sensor:1.0",
-              "createOptions": {}
-            }
-          },
           "node": {
             "version": "1.0",
             "type": "docker",
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "${MODULES.node.debug}",
-              "createOptions": {
-                "ExposedPorts": {
-                  "5678/tcp": {}
-                },
-                "HostConfig": {
-                  "PortBindings": {
-                    "5678/tcp": [
-                      {
-                        "HostPort": "5678"
-                      }
-                    ]
-                  }
-                }
-              }
+              "image": "${MODULES.node}",
+              "createOptions": {}
             }
           }
         }
