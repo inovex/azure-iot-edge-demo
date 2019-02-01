@@ -1,20 +1,24 @@
-# Azure 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Azure IoT Edge Demo
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+This repo contains a demo Azure IoT Edge application consisting of two python components:
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+* An [IoT device](/device) to be run on a Raspberry Pi, which reads data from a DS18B20 sensor and sends a message towards the cloud each second.
+* An [IoT Edge deployment](/deployment.template.json) with a single [module](/modules/node), which intercepts and prints these messages before forwarding them to the cloud.
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+The python code is based on Microsoft's [Azure IoT Python samples](https://github.com/Azure-Samples/azure-iot-samples-python).
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://www.visualstudio.com/en-us/docs/git/create-a-readme). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+## Building and Testing the application
+
+The following steps will guide you in setting up the demo application
+
+### Prerequisites
+
+* You'll need an azure subscription with an Azure IoT Hub and a container registry, follow [this quickstart guide from Microsoft](https://docs.microsoft.com/en-us/azure/iot-edge/quickstart-linux) for guidance
+* Install the [azure cli with the iotedge extension](https://github.com/Azure/azure-iot-cli-extension) and login using `az login`
+* An VM (or Physical device, we used a Raspberry Pi) as Edge Node and two Raspberry Pis with an DS18B20 sensor each as Edge Devices (the Pis can also be simulated with the included Dockerfile).
+* Set up Certificates for [the Edge Node](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-create-transparent-gateway) and [install them on the Edge devices](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-connect-downstream-device)
+* Install iotedgedev using `pip install iotedgedev` (or use the [VSCode extension](https://marketplace.visualstudio.com/items?itemName=vsciot-vscode.azure-iot-edge))
+
+### Deploying to the edge node
+
+If you have everything set up you first need to change the container registry in
