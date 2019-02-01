@@ -26,7 +26,7 @@ The following steps will guide you in setting up the demo application
 
 ### Edge Node Deployment
 
-If you have everything set up you first need to change the container registry settings in the [module.json](/modules/node/module.json) and [deployment.template.json]. Simply replace `inovexedgedemoacr.azurecr.io` with your registry URI and adjust the credentials accordingly.
+If you have everything set up you first need to change the container registry settings in the [module.json](/modules/node/module.json) and [deployment.template.json](/deployment.template.json). Simply replace `inovexedgedemoacr.azurecr.io` with your registry URI and adjust the credentials accordingly.
 You can then deploy to the edge node using the iotedgedev cli:
 
 ```sh
