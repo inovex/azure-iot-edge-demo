@@ -51,7 +51,10 @@ class HubManager(object):
         # should contain json with keys "uuid", "device", "timestamp", "value", "unit"
         measurement = json.decode(content)
         print("Received measurement " + str(measurement))
-        ##
+        value = measurement["value"]
+        timestamp = measurement["timtestamp"]
+        # if value>20:
+        ## old stuff
         map_properties = message.properties()
         key_value_pair = map_properties.get_internals()
         print ( "    Properties: %s" % key_value_pair )
