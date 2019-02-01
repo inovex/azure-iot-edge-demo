@@ -62,7 +62,14 @@ done
 
 ### Edge Device Deployment
 
-Simply copy the device folder on the Pi, install the requirements and run it:
+Retrieve the connection strings for your devices if not done already:
+
+```sh
+az iot hub device-identity show-connection-string -n $HUB_NAME -d edge-device-0 | jq '.cs'
+az iot hub device-identity show-connection-string -n $HUB_NAME -d edge-device-1 | jq '.cs'
+```
+
+Then simply copy the device folder on the Pi, install the requirements and run it:
 
 ```sh
 # copy files to pi TODO replace with git pull?
@@ -71,11 +78,4 @@ ssh <user>@<your-edge-device-ip>
 cd device
 pip install -r requirements.txt
 python device.py sensor '<your-device-connection-string-in-quotes>'
-```
-
-The connection string can be retrieved using
-
-```sh
-az iot hub device-identity show-connection-string -n $HUB_NAME -d edge-device-0 | jq '.cs')
-az iot hub device-identity show-connection-string -n $HUB_NAME -d edge-device-1 | jq '.cs')
 ```
