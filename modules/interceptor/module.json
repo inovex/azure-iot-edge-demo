@@ -2,7 +2,7 @@
   "$schema-version": "0.0.1",
   "description": "",
   "image": {
-    "repository": "inovexedgedemoacr.azurecr.io/node",
+    "repository": "inovexedgedemoacr.azurecr.io/interceptor",
     "tag": {
       "version": "${BUILD_BUILDNUMBER}",
       "platforms": {
