@@ -17,7 +17,6 @@ The following steps will guide you in setting up the demo application
 * Install the [azure cli with the iotedge extension](https://github.com/Azure/azure-iot-cli-extension) and login using `az login`
 * Install iotedgedev using `pip install iotedgedev` (or use the [VSCode extension](https://marketplace.visualstudio.com/items?itemName=vsciot-vscode.azure-iot-edge)) locally
 
-
 ### Edge Node Prerequisites
 
 * Either provision a VM with Ubuntu-16.04 or a Raspberry Pi with Raspbian
