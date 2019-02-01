@@ -1,5 +1,5 @@
 #!/bin/bash
-HUB_NAME=iotedgedemo
+HUB_NAME=$1
 for iotdevice in edge-device-1 edge-device-2; do
    az iot hub device-identity create -n $HUB_NAME -d $iotdevice
    echo "Created $iotdevice. Connection String:"
