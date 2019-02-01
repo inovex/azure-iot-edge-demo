@@ -9,7 +9,9 @@ The python code is based on Microsoft's [Azure IoT Python samples](https://githu
 
 ## Building and Testing the application
 
-The following steps will guide you in setting up the demo application
+The following steps will guide you in setting up the demo application. The setup used in the live demo looked as following:
+
+![Demo setup consisting of two Raspberry Pis used as edge-device-0 and edge-device-1 respectively and an additional Raspberry Pi used as edge-node. They communicate over WiFi, which is linked to the internet, where the IoT Hub called iotedgedemo can be reached.](/img/hardware.png "Hardware setup from Demo")
 
 ### General prerequisites
 
