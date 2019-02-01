@@ -21,10 +21,6 @@ from datetime import datetime
 # By default, messages do not expire.
 MESSAGE_TIMEOUT = 10000
 
-# global counters
-RECEIVE_CALLBACKS = 0
-SEND_CALLBACKS = 0
-
 # Choose HTTP, AMQP or MQTT as transport protocol.  Currently only MQTT is supported.
 PROTOCOL = IoTHubTransportProvider.MQTT
 
