@@ -1,2 +1,3 @@
 azure-iothub-device-client~=1.4.3
-sensor==5
+ds18b20
+art==2.9
