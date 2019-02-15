@@ -26,6 +26,7 @@ ds18b20.sensors(function(err, ids) {
 
 // SUPPLY as cmd argument
 var connectionString = process.argv[2];
+var deviceId = connectionString.split(";")[1].split("=")[1]
 
 // fromConnectionString must specify a transport constructor, coming from any transport package.
 var client = Client.fromConnectionString(connectionString, Protocol);
@@ -49,7 +50,7 @@ var connectCallback = function (err) {
     // Create a message and send it to the IoT Hub every two seconds
     var sendInterval = setInterval(function () {
       var temperature = ds18b20.temperatureSync(sensorId)
-      var data = JSON.stringify({ deviceId: 'myFirstDevice', temperature: temperature });
+      var data = JSON.stringify({ deviceId: deviceId, temperature: temperature });
       var message = new Message(data);
       console.log('Sending message: ' + message.getData());
       client.sendEvent(message, printResultFor('send'));
