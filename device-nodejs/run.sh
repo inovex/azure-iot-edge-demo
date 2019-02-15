@@ -1,0 +1,1 @@
+node sensor.js $(cat /etc/edge/connection_string)
