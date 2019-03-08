@@ -51,15 +51,14 @@ class HubManager(object):
         # should contain json with keys "uuid", "device", "timestamp", "value", "unit"
         measurement = json.decode(content)
         print("Received measurement " + str(measurement))
-        value = measurement["value"]
-        timestamp = measurement["timtestamp"]
+        value = measurement["temperature"]
+        timestamp = measurement["timestamp"]
+        message_uuid = measurement["message_uuid"]
+        device_id = measurement["device_id"]
         # if value>20:
-        ## old stuff
         map_properties = message.properties()
         key_value_pair = map_properties.get_internals()
         print ( "    Properties: %s" % key_value_pair )
-        RECEIVE_CALLBACKS += 1
-        print ( "    Total calls received: %d" % RECEIVE_CALLBACKS )
         self.forward_event_to_output("sensor", message, message_uuid)
         return IoTHubMessageDispositionResult.ACCEPTED
 
@@ -80,7 +79,7 @@ def main(protocol, connection_string):
         print ("IoTHubModuleClient sample stopped")
 
 if __name__ == '__main__':
-    elif len(sys.argv) < 2:
+    if len(sys.argv) < 2:
         msg="Please provide connection string as first argument. Should be placed in single quotes"
         sys.exit(msg)
     connection_string=sys.argv[1]
