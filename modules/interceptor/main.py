@@ -55,10 +55,12 @@ class HubManager(object):
         device_id = measurement["device_id"]
         if device_id not in self._received_measurements:
             self._received_measurements[device_id] = []
-        self._received_measurements[device_id] += measurement
+        self._received_measurements[device_id] += {
+            "temperature" : measurement["temperature"],
+            "timestamp" : measurement["timestamp"]
+            }
         if len(self._received_measurements[device_id]) > 9:
             measurements = self._received_measurements[device_id]
-            print(measurements)
             average_temp = sum([m["temperature"] for m in measurements])/len(measurements)
             aggregate_ts = datetime.datetime.utcnow().isoformat()
             self._received_measurements[device_id] = []
