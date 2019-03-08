@@ -55,28 +55,26 @@ class HubManager(object):
         device_id = measurement["device_id"]
         if device_id not in self._received_measurements:
             self._received_measurements[device_id] = []
-        self._received_measurements[device_id] += {
+        self._received_measurements[device_id] += [{
             "temperature" : measurement["temperature"],
             "timestamp" : measurement["timestamp"]
-            }
+            }]
         if len(self._received_measurements[device_id]) > 9:
             measurements = self._received_measurements[device_id]
-            print(measurements)
             average_temp = sum([m["temperature"] for m in measurements])/len(measurements)
             aggregate_ts = datetime.datetime.utcnow().isoformat()
             self._received_measurements[device_id] = []
-
-            message_uuid=uuid.uuid1()
+            aggregate_message_uuid=uuid.uuid1()
             contents = {
-                "message_uuid": str(message_uuid),
+                "message_uuid": str(aggregate_message_uuid),
                 "device_id": device_id, 
                 "temperature": average_temp, 
                 "timestamp": aggregate_ts,
                 "forward_device": self.device_id
                 }
-            print("Sending aggregated measurement " + str(measurement))
-            forward_message = IoTHubMessage(json.dumps(contents))
-            self.forward_event_to_output("sensor", forward_message, message_uuid)
+            print("Sending aggregated measurement " + str(contents))
+            aggregate_message = IoTHubMessage(json.dumps(contents))
+            self.forward_event_to_output("sensor", aggregate_message, str(aggregate_message_uuid))
 
 
 def receive_message_callback(message, hubManager):
