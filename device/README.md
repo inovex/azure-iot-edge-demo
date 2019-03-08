@@ -27,5 +27,5 @@ git clone https://github.com/inovex/azure-iot-edge-demo
 cd azure-iot-edge-demo/device
 npm install
 # Run the module using the IoT device's connection string
-node sensor.js $YOUR_CONNECTION_STRING
+node sensor.js $YOUR_CONNECTION_STRING $PATH_TO_YOUR_EDGE_NODE_CA
 ```
