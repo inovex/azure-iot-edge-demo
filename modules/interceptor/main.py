@@ -71,7 +71,7 @@ class HubManager(object):
                     "timestamp": datetime.datetime.utcnow().isoformat(),
                     "message_test": "Temperature is too high!!!"
                 }
-                print("Sending warn message " + str(measurement))
+                print("Sending warn message " + str(contents))
                 msg = IoTHubMessage(json.dumps(contents))
                 self.forward_event_to_output("sensor", msg, str(warn_message_uuid))
 
