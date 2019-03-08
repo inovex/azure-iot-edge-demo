@@ -13,7 +13,4 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-RUN useradd -ms /bin/bash moduleuser
-USER moduleuser
-
 ENTRYPOINT [ "/bin/bash", "-c", "echo '10.100.36.59 edge-node' >> /etc/hosts && python3 -u ./main.py" ]
