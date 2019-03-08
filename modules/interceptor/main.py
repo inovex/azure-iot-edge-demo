@@ -60,7 +60,7 @@ def receive_message_callback(message, hubManager):
     message_buffer = message.get_bytearray()
     size = len(message_buffer)
     content = message_buffer[:size].decode()
-    measurement = json.decode(content)
+    measurement = json.loads(content)
     print("Received measurement " + str(measurement))
     hubManager.handle_measurement(measurement)
     return IoTHubMessageDispositionResult.ACCEPTED
