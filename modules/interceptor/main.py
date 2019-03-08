@@ -70,6 +70,7 @@ class HubManager(object):
                 "timestamp": aggregate_ts,
                 "forward_device": self.device_id
                 }
+            print("Sending aggregated measurement " + str(measurement))
             forward_message = IoTHubMessage(json.dumps(contents))
             self.forward_event_to_output("sensor", forward_message, message_uuid)
 
