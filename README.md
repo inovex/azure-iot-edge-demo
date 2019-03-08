@@ -43,9 +43,7 @@ iotedgedev build -f deployment.template.json -P arm32v7 --push --deploy
 
 ### Edge Device Prerequisites
 
-* Provision two Raspberry Pis with an DS18B20 sensor and Raspbian as Edge Devices (the Pis can also be simulated with the included Dockerfile).
-  * For the sensor, I2C must be enabled
-  * Use [this tutorial](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-raspberry-pi-kit-node-get-started) as guidance
+* Provision two Raspberry Pis with an DS18B20 sensor and Raspbian as Edge Devices
 * The Pis should be able to reach the Edge Node on a static IP
 * The IP address of the Edge Node needs to be added to /etc/hosts of the devices: `echo "<Edge Node ip> edge-node" >> /etc/hosts`
 * [Install the certificates from the Edge Node on the Edge devices](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-connect-downstream-device)
@@ -59,6 +57,8 @@ for iotdevice in edge-device-1 edge-device-2; do
    az iot hub device-identity show-connection-string -n $HUB_NAME -d $iotdevice | jq ".cs"
 done
 ```
+
+Then refer to [the device readme](./device/README.md) to setup the sensor and software.
 
 ### Edge Device Deployment
 
