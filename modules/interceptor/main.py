@@ -51,8 +51,7 @@ class HubManager(object):
         message_uuid = measurement["message_uuid"]
         contents={k:v for k, v in measurement.items()}
         contents["forward_device"] = self.device_id
-        message=IoTHubMessage(json.dumps(contents))
-        forward_message = IoTHubMessage()
+        forward_message = IoTHubMessage(json.dumps(contents))
         self.forward_event_to_output("sensor", forward_message, message_uuid)
 
 
