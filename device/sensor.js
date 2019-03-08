@@ -3,6 +3,7 @@
 
 'use strict';
 
+var fs = require('file-system');
 var Protocol = require('azure-iot-device-mqtt').Mqtt;
 // Uncomment one of these transports and then change it in fromConnectionString to test other transports
 // var Protocol = require('azure-iot-device-amqp').AmqpWs;

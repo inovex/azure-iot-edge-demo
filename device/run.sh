@@ -1,1 +1,1 @@
-node sensor.js $(cat /etc/edge/connection_string)
+node sensor.js $(cat /etc/edge/connection_string) /etc/edge/root.ca.pem
