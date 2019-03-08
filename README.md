@@ -51,7 +51,7 @@ iotedgedev build -f deployment.template.json -P arm32v7 --push --deploy
 
 ```sh
 HUB_NAME=<your-hub-name>
-for iotdevice in edge-device-1 edge-device-2; do
+for iotdevice in edge-device-0 edge-device-1; do
    az iot hub device-identity create -n $HUB_NAME -d $iotdevice
    echo "Created $iotdevice. Connection String:"
    az iot hub device-identity show-connection-string -n $HUB_NAME -d $iotdevice | jq ".cs"
@@ -62,20 +62,4 @@ Then refer to [the device readme](./device/README.md) to setup the sensor and so
 
 ### Edge Device Deployment
 
-Retrieve the connection strings for your devices if not done already:
-
-```sh
-az iot hub device-identity show-connection-string -n $HUB_NAME -d edge-device-0 | jq '.cs'
-az iot hub device-identity show-connection-string -n $HUB_NAME -d edge-device-1 | jq '.cs'
-```
-
-Then simply copy the device folder on the Pi, install the requirements and run it:
-
-```sh
-# copy files to pi TODO replace with git pull?
-scp ./device <user>@<your-edge-device-ip>:~/device
-ssh <user>@<your-edge-device-ip>
-cd device
-pip install -r requirements.txt
-python device.py sensor '<your-device-connection-string-in-quotes>'
-```
+Refer to [the device readme](device/README.md)
