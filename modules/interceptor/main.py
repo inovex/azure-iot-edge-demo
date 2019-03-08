@@ -39,21 +39,12 @@ class HubManager(object):
         # set the time until a message times out
         self.client.set_option("messageTimeout", MESSAGE_TIMEOUT)
         # input for sensor messages
-        self.client.set_message_callback("sensor", self.receive_measurement_callback, self)
+        self.client.set_message_callback("sensor", receive_message_callback, self)
 
     # Forwards the message received onto the next stage in the process.
     def forward_event_to_output(self, outputQueueName, event, send_context):
         self.client.send_event_async(
             outputQueueName, event, send_confirmation_callback, send_context)
-
-    def receive_measurement_callback(self, message):
-        message_buffer = message.get_bytearray()
-        size = len(message_buffer)
-        content = message_buffer[:size].decode()
-        measurement = json.decode(content)
-        print("Received measurement " + str(measurement))
-        self.handle_measurement(measurement)
-        return IoTHubMessageDispositionResult.ACCEPTED
 
     # This method is responsible for everything to do with message contents
     def handle_measurement(self, measurement):
@@ -64,6 +55,15 @@ class HubManager(object):
         forward_message = IoTHubMessage()
         self.forward_event_to_output("sensor", forward_message, message_uuid)
 
+
+def receive_message_callback(message, hubManager):
+    message_buffer = message.get_bytearray()
+    size = len(message_buffer)
+    content = message_buffer[:size].decode()
+    measurement = json.decode(content)
+    print("Received measurement " + str(measurement))
+    self.handle_measurement(measurement)
+    return IoTHubMessageDispositionResult.ACCEPTED
 
 def main(protocol):
     try:
