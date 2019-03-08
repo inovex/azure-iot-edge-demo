@@ -29,6 +29,7 @@ The following steps will guide you in setting up the demo application. The setup
 ### Edge Node Deployment
 
 If you have everything set up you first need to change the container registry settings in the [module.json](/modules/node/module.json) and [deployment.template.json](/deployment.template.json). Simply replace `inovexedgedemoacr.azurecr.io` with your registry URI and adjust the credentials accordingly.
+In the Docker entrypoint, replace the IP address in `echo '10.100.36.59 edge-node'` with the one of your edge-node. This procedure is a hotfix for us not having a FQDN for our edge-node.
 You can then deploy to the edge node using the iotedgedev cli:
 
 ```sh
