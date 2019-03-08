@@ -5,8 +5,10 @@
 import os
 import random
 import time
+import datetime
 import sys
 import json
+import uuid
 import iothub_client
 # pylint: disable=E0611
 from iothub_client import IoTHubModuleClient, IoTHubClientError, IoTHubTransportProvider
@@ -40,6 +42,7 @@ class HubManager(object):
         self.client.set_option("messageTimeout", MESSAGE_TIMEOUT)
         # input for sensor messages
         self.client.set_message_callback("sensor", receive_message_callback, self)
+        self._received_measurements = {}
 
     # Forwards the message received onto the next stage in the process.
     def forward_event_to_output(self, outputQueueName, event, send_context):
@@ -49,10 +52,26 @@ class HubManager(object):
     # This method is responsible for everything to do with message contents
     def handle_measurement(self, measurement):
         message_uuid = measurement["message_uuid"]
-        contents={k:v for k, v in measurement.items()}
-        contents["forward_device"] = self.device_id
-        forward_message = IoTHubMessage(json.dumps(contents))
-        self.forward_event_to_output("sensor", forward_message, message_uuid)
+        device_id = measurement["device_id"]
+        if device_id not in self._received_measurements:
+            self._received_measurements[device_id] = []
+        self._received_measurements[device_id] += measurement
+        if len(self._received_measurements[device_id]) > 9:
+            measurements = self._received_measurements[device_id]
+            average_temp = sum([m["temperature"] for m in measurements])/len(measurements)
+            aggregate_ts = datetime.datetime.utcnow().isoformat()
+            self._received_measurements[device_id] = []
+
+            message_uuid=uuid.uuid1()
+            contents = {
+                "message_uuid": str(message_uuid),
+                "device_id": device_id, 
+                "temperature": average_temp, 
+                "timestamp": aggregate_ts,
+                "forward_device": self.device_id
+                }
+            forward_message = IoTHubMessage(json.dumps(contents))
+            self.forward_event_to_output("sensor", forward_message, message_uuid)
 
 
 def receive_message_callback(message, hubManager):
