@@ -50,16 +50,20 @@ class HubManager(object):
         message_buffer = message.get_bytearray()
         size = len(message_buffer)
         content = message_buffer[:size].decode()
-        # should contain json with keys "uuid", "device", "timestamp", "value", "unit"
         measurement = json.decode(content)
         print("Received measurement " + str(measurement))
-        message_uuid = measurement["message_uuid"]
-        # if value>20:
-        map_properties = message.properties()
-        key_value_pair = map_properties.get_internals()
-        print ( "    Properties: %s" % key_value_pair )
-        self.forward_event_to_output("sensor", message, message_uuid)
+        self.handle_measurement(measurement)
         return IoTHubMessageDispositionResult.ACCEPTED
+
+    # This method is responsible for everything to do with message contents
+    def handle_measurement(self, measurement):
+        message_uuid = measurement["message_uuid"]
+        contents={k:v for k, v in measurement.items()}
+        contents["forward_device"] = self.device_id
+        message=IoTHubMessage(json.dumps(contents))
+        forward_message = IoTHubMessage()
+        self.forward_event_to_output("sensor", forward_message, message_uuid)
+
 
 def main(protocol):
     try:
