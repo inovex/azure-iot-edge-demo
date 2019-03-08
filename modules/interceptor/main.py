@@ -62,7 +62,7 @@ def receive_message_callback(message, hubManager):
     content = message_buffer[:size].decode()
     measurement = json.decode(content)
     print("Received measurement " + str(measurement))
-    self.handle_measurement(measurement)
+    hubManager.handle_measurement(measurement)
     return IoTHubMessageDispositionResult.ACCEPTED
 
 def main(protocol):
