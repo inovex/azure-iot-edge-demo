@@ -65,9 +65,6 @@
             "settings": {
               "image": "${MODULES.interceptor}",
               "createOptions": {
-                "Cmd": [
-                  "${DEVICE_CONNECTION_STRING};ModuleId=interceptor;GatewayHostName=edge-node"
-                ]
               }
             }
           }

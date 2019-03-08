@@ -2,6 +2,7 @@
 # Licensed under the MIT license. See LICENSE file in the project root for
 # full license information.
 
+import os
 import random
 import time
 import sys
@@ -29,11 +30,12 @@ class HubManager(object):
 
     def __init__(
             self,
-            protocol=IoTHubTransportProvider.MQTT,
-            connection_string=None):
+            protocol=IoTHubTransportProvider.MQTT):
         self.client_protocol = protocol
-        self.client= IoTHubModuleClient(connection_string, protocol)
-        self.device_id= connection_string.split(";")[1].split("=")[1]
+    
+        self.client = IoTHubModuleClient()
+        self.client.create_from_environment(protocol)
+        self.device_id= os.getenv("IOTEDGE_DEVICEID", "err")
         # set the time until a message times out
         self.client.set_option("messageTimeout", MESSAGE_TIMEOUT)
         # input for sensor messages
@@ -51,10 +53,7 @@ class HubManager(object):
         # should contain json with keys "uuid", "device", "timestamp", "value", "unit"
         measurement = json.decode(content)
         print("Received measurement " + str(measurement))
-        value = measurement["temperature"]
-        timestamp = measurement["timestamp"]
         message_uuid = measurement["message_uuid"]
-        device_id = measurement["device_id"]
         # if value>20:
         map_properties = message.properties()
         key_value_pair = map_properties.get_internals()
@@ -62,12 +61,11 @@ class HubManager(object):
         self.forward_event_to_output("sensor", message, message_uuid)
         return IoTHubMessageDispositionResult.ACCEPTED
 
-
-def main(protocol, connection_string):
+def main(protocol):
     try:
         print ( "\nPython %s\n" % sys.version )
         print(text2art("inovex"))
-        hub_manager = HubManager(protocol, connection_string)
+        hub_manager = HubManager(protocol)
         print("Waiting for messages...")
         while True:
             time.sleep(1)
@@ -79,9 +77,4 @@ def main(protocol, connection_string):
         print ("IoTHubModuleClient sample stopped")
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        msg="Please provide connection string as first argument. Should be placed in single quotes"
-        sys.exit(msg)
-    connection_string=sys.argv[1]
-    print("Provided connection string was '" + connection_string + "'")
-    main(PROTOCOL, connection_string)
+    main(PROTOCOL)
