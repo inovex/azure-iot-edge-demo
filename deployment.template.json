@@ -64,7 +64,11 @@
             "restartPolicy": "always",
             "settings": {
               "image": "${MODULES.interceptor}",
-              "createOptions": {}
+              "createOptions": {
+                "Cmd": [
+                  "${DEVICE_CONNECTION_STRING}"
+                ]
+              }
             }
           }
         }
