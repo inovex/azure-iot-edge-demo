@@ -34,7 +34,7 @@ You can then deploy to the edge node using the iotedgedev cli:
 ```sh
 # Prepare environment variables for iotedgedev, skip this part when redeploying
 $HUB_NAME=<your-hub-name>
-echo "BUILD_BUILDNUMBER=0.0.1" > .env
+echo "BUILD_BUILDNUMBER=0.0.1" >> .env
 echo "IOTHUB_CONNECTION_STRING=$(az iot hub show-connection-string -n $HUB_NAME | jq '.cs')" >> .env
 echo "DEVICE_CONNECTION_STRING=$(az iot hub device-identity show-connection-string -n $HUB_NAME -d edge-node | jq '.cs')" >> .env
 # Build & Push Docker images and deploy
