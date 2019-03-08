@@ -28,6 +28,8 @@ ds18b20.sensors(function(err, ids) {
 var connectionString = process.argv[2];
 var deviceId = connectionString.split(";")[1].split("=")[1]
 
+var edge_ca_cert_path = process.argv[3];
+
 // fromConnectionString must specify a transport constructor, coming from any transport package.
 var client = Client.fromConnectionString(connectionString, Protocol);
 
@@ -68,7 +70,17 @@ var connectCallback = function (err) {
   }
 };
 
-client.open(connectCallback);
+var options = {
+  ca : fs.readFileSync(edge_ca_cert_path, 'utf-8'),
+};
+
+client.setOptions(options, function(err) {
+  if (err) {
+    console.log('SetOptions Error: ' + err);
+  } else {
+    client.open(connectCallback);
+  }
+});
 
 // Helper function to print results in the console
 function printResultFor(op) {
