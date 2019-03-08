@@ -13,7 +13,8 @@
     "es5-shim": "^4.5.12",
     "lodash": "^4.17.11",
     "ds18b20": "^0.1.0",
-    "file-system": "2.2.2"
+    "file-system": "^2.2.2",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "jshint": "^2.9.6"

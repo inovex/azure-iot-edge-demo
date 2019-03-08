@@ -10,6 +10,7 @@ var Protocol = require('azure-iot-device-mqtt').Mqtt;
 // var Protocol = require('azure-iot-device-http').Http;
 // var Protocol = require('azure-iot-device-amqp').Amqp;
 // var Protocol = require('azure-iot-device-mqtt').MqttWs;
+var uuidv1 = require('uuid/v1');
 var Client = require('azure-iot-device').Client;
 var Message = require('azure-iot-device').Message;
 var ds18b20 = require('ds18b20');
@@ -52,8 +53,15 @@ var connectCallback = function (err) {
 
     // Create a message and send it to the IoT Hub every two seconds
     var sendInterval = setInterval(function () {
+      var isoDate = new Date().toISOString()
+      var messageUuid = uuidv1();
       var temperature = ds18b20.temperatureSync(sensorId)
-      var data = JSON.stringify({ deviceId: deviceId, temperature: temperature });
+      var data = JSON.stringify({ 
+        device_id: deviceId, 
+        temperature: temperature,
+        timestamp: isoDate,
+        message_uuid: messageUuid
+      });
       var message = new Message(data);
       console.log('Sending message: ' + message.getData());
       client.sendEvent(message, printResultFor('send'));
