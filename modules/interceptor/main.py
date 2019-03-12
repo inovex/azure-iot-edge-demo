@@ -59,24 +59,23 @@ class HubManager(object):
             "temperature" : measurement["temperature"],
             "timestamp" : measurement["timestamp"]
              }]
-        if len(self._received_measurements[device_id]) > 9:
-            measurements = self._received_measurements[device_id]
-            average_temp = sum([m["temperature"] for m in measurements])/len(measurements)
-            aggregate_ts = datetime.datetime.utcnow().isoformat()
-            self._received_measurements[device_id] = []
-            aggregate_message_uuid=uuid.uuid1()
-            contents = {
-                 "message_uuid": str(aggregate_message_uuid),
-                 "device_id": device_id, 
-                 "temperature": average_temp, 
-                 "timestamp": aggregate_ts,
-                 "forward_device": self.device_id
-               }
-            print("Sending aggregated measurement " + str(contents))
-            aggregate_message = IoTHubMessage(json.dumps(contents))
-            self.forward_event_to_output("sensor", aggregate_message, str(aggregate_message_uuid))
-
-
+        threshold = 30.0
+        if measurement["temperature"] > threshold:
+            other_device_ids = [k for k in self._received_measurements if k != device_id]
+            other_measurements = [ms[-1] for did in other_device_ids for ms in self._received_measurements[did]]
+            if all([m["temperature"] > threshold for m in other_measurements]):
+                warn_message_uuid = str(uuid.uuid1())
+                contents = {
+                    "message_uuid": str(warn_message_uuid),
+                    "device_id": self.device_id,
+                    "timestamp": datetime.datetime.utcnow().isoformat(),
+                    "temperature": 35,
+                    "message_test": "Temperature is too high!!!"
+                }
+                print("Sending warn message "   str(contents))
+                msg = IoTHubMessage(json.dumps(contents))
+                self.forward_event_to_output("sensor", msg, str(warn_message_uuid))
+        
 
 def receive_message_callback(message, hubManager):
     message_buffer = message.get_bytearray()
