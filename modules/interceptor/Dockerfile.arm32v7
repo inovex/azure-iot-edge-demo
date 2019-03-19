@@ -13,4 +13,4 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-ENTRYPOINT [ "/bin/bash", "-c", "echo '10.100.36.59 edge-node' >> /etc/hosts && python3 -u ./main.py" ]
+ENTRYPOINT [ "/bin/bash", "-c", "echo '10.100.28.58 edge-node' >> /etc/hosts && python3 -u ./main.py" ]
