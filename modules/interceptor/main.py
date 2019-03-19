@@ -61,6 +61,23 @@ class HubManager(object):
         contents["forward_device"] = self.device_id
         forward_message = IoTHubMessage(json.dumps(contents))
         self.forward_event_to_output("sensor", forward_message, message_uuid)
+        if all([self._received_measurements[device_id]
+                for device_id in self._received_measurements]):
+            # send message with avg temperature of devices
+            average_temp = (sum(self._last_sent_measurements.values()[-1])
+                            / len(self._last_sent_measurements))
+            for device_id in self._last_sent_measurements:
+                self._last_sent_measurements[device_id] = None
+            aggregate_ts = datetime.datetime.utcnow().isoformat()
+            contents = {
+                "message_uuid": str(uuid.uuid1()),
+                "device_id": self.device_id, 
+                "temperature": average_temp, 
+                "timestamp": aggregate_ts
+                }
+            print("Sending aggregated measurement " + str(contents))
+            aggregate_message = IoTHubMessage(json.dumps(contents))
+            self.forward_event_to_output("sensor", aggregate_message, str(aggregate_message_uuid))
 
 def receive_message_callback(message, hubManager):
     message_buffer = message.get_bytearray()
